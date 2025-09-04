@@ -32,6 +32,11 @@
 - 📊 **Interactive Dashboard** - Comprehensive metrics overview
 - 🔍 **Search & Filter** - Easy URL management
 
+<div align="center">
+  <img src="public/screenshot/landing.png" alt="Smart URL Shortener landing page showing modern glassmorphism design with URL input field and feature highlights" width="800">
+  <p><em>Modern landing page with glassmorphism design and intuitive URL shortening interface</em></p>
+</div>
+
 ## 🛠️ Tech Stack
 
 - **Backend**: Laravel 11, PHP 8.2+
@@ -271,6 +276,11 @@ MAIL_PASSWORD=your-password
 
 ## 🎯 Usage
 
+<div align="center">
+  <img src="public/screenshot/url.png" alt="URL shortening interface showing input field for long URL and generated short link with copy functionality" width="800">
+  <p><em>Simple and intuitive URL shortening process with instant results</em></p>
+</div>
+
 ### For End Users
 1. **Visit your deployed app** (e.g., `https://your-app.railway.app`)
 2. **Register an account** or use as guest
@@ -297,6 +307,11 @@ MAIL_PASSWORD=your-password
 | Custom Domains | Brand your links | 🔄 Coming Soon |
 | API Access | Programmatic integration | 🔄 Coming Soon |
 | Bulk Operations | Mass URL management | 🔄 Coming Soon |
+
+<div align="center">
+  <img src="public/screenshot/dashboard.png" alt="Analytics dashboard showing real-time click statistics, geographic data, device tracking, and interactive charts" width="800">
+  <p><em>Comprehensive analytics dashboard with real-time statistics and interactive charts</em></p>
+</div>
 
 ---
 
