@@ -53,7 +53,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Pegasus-Prongs/url_shorten.git
    cd url_shorten
    ```
 
