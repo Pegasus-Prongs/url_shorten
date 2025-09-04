@@ -138,4 +138,34 @@
     animation: float 6s ease-in-out infinite;
     animation-delay: 2s;
   }
+
+  /* Custom Gradient Backgrounds */
+  .bg-gradient-button {
+    background-image: var(--gradient-button);
+  }
+
+  .bg-gradient-secondary {
+    background-image: var(--gradient-secondary);
+  }
+
+  .bg-gradient-accent {
+    background-image: var(--gradient-accent);
+  }
+
+  .bg-gradient-royal {
+    background-image: var(--gradient-royal);
+  }
+
+  /* Enhanced Table Styles */
+  .table-modern {
+    @apply bg-white rounded-xl shadow-modern overflow-hidden;
+  }
+
+  .table-modern th {
+    @apply bg-gray-50/80 backdrop-blur-sm text-gray-700 font-semibold;
+  }
+
+  .table-modern tr:hover {
+    @apply bg-gradient-to-r from-primary-50/30 to-secondary-50/30;
+  }
 }

@@ -2,12 +2,20 @@
 import { ref, onMounted, computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
     canLogin: {
         type: Boolean,
     },
     canRegister: {
         type: Boolean,
+    },
+    stats: {
+        type: Object,
+        default: () => ({
+            total_urls: 0,
+            total_clicks: 0,
+            active_users: 0,
+        }),
     },
 });
 
@@ -24,22 +32,36 @@ const currentStep = ref(0);
 const longUrl = "https://www.example.com/very/long/url/with/many/parameters?utm_source=social&utm_medium=facebook&utm_campaign=summer2024&ref=homepage";
 const shortUrl = "short.ly/abc123";
 
-// Animated counter function
-const animateCounter = (target, duration = 2000) => {
+// Animated counter function with NaN protection (exactly 1 second)
+const animateCounter = (targetRef, targetValue, duration = 1000) => {
     return new Promise((resolve) => {
-        const start = 0;
-        const increment = target / (duration / 16);
-        let current = 0;
+        // Ensure target is a valid number
+        const safeTarget = Number.isFinite(targetValue) ? targetValue : 0;
 
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-                resolve();
+        const startTime = Date.now();
+        const startValue = 0;
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function for smooth animation (ease-out)
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+
+            const current = Math.floor(startValue + (safeTarget - startValue) * easeOut);
+
+            // Update the reactive reference
+            targetRef.value = current;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                targetRef.value = safeTarget;
+                resolve(safeTarget);
             }
-            return Math.floor(current);
-        }, 16);
+        };
+
+        requestAnimationFrame(animate);
     });
 };
 
@@ -48,11 +70,18 @@ onMounted(() => {
     setTimeout(() => {
         isVisible.value = true;
 
-        // Animate counters
+        // Animate counters with real data from database (1 second each)
         setTimeout(() => {
-            animateCounter(15247).then(val => urlsShortened.value = val);
-            animateCounter(89432).then(val => totalClicks.value = val);
-            animateCounter(2847).then(val => activeUsers.value = val);
+            const safeStats = {
+                total_urls: Number.isFinite(props.stats?.total_urls) ? props.stats.total_urls : 0,
+                total_clicks: Number.isFinite(props.stats?.total_clicks) ? props.stats.total_clicks : 0,
+                active_users: Number.isFinite(props.stats?.active_users) ? props.stats.active_users : 0,
+            };
+
+            // Start all animations simultaneously, each taking exactly 1 second
+            animateCounter(urlsShortened, safeStats.total_urls, 1000);
+            animateCounter(totalClicks, safeStats.total_clicks, 1000);
+            animateCounter(activeUsers, safeStats.active_users, 1000);
         }, 500);
 
         // Animate how it works steps
@@ -65,10 +94,21 @@ onMounted(() => {
     }, 300);
 });
 
-// Computed values for animated counters
-const animatedUrlsShortened = computed(() => Math.floor(urlsShortened.value));
-const animatedTotalClicks = computed(() => Math.floor(totalClicks.value));
-const animatedActiveUsers = computed(() => Math.floor(activeUsers.value));
+// Computed values for animated counters with NaN protection
+const animatedUrlsShortened = computed(() => {
+    const val = Number(urlsShortened.value);
+    return Number.isFinite(val) ? Math.floor(val) : 0;
+});
+
+const animatedTotalClicks = computed(() => {
+    const val = Number(totalClicks.value);
+    return Number.isFinite(val) ? Math.floor(val) : 0;
+});
+
+const animatedActiveUsers = computed(() => {
+    const val = Number(activeUsers.value);
+    return Number.isFinite(val) ? Math.floor(val) : 0;
+});
 </script>
 
 <template>
@@ -117,9 +157,15 @@ const animatedActiveUsers = computed(() => Math.floor(activeUsers.value));
         </nav>
 
         <!-- Hero Section -->
-        <div class="relative section-gradient-subtle">
+        <div class="relative section-gradient-subtle min-h-screen flex items-center">
             <!-- Gradient Background -->
             <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-secondary-50"></div>
+
+            <!-- Floating Elements -->
+            <div class="absolute top-20 left-10 w-20 h-20 bg-white/30 rounded-full animate-float shadow-lg"></div>
+            <div class="absolute top-40 right-20 w-16 h-16 bg-primary-200/40 rounded-full animate-float-delayed shadow-lg"></div>
+            <div class="absolute bottom-40 left-20 w-24 h-24 bg-secondary-200/30 rounded-full animate-float shadow-lg"></div>
+            <div class="absolute bottom-20 right-10 w-12 h-12 bg-white/40 rounded-full animate-float-delayed shadow-lg"></div>
 
             <!-- Content -->
             <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">

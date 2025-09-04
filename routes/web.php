@@ -3,22 +3,33 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UrlController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    // Get real statistics for the landing page
+    $totalUrls = \App\Models\Url::count();
+    $totalClicks = \App\Models\UrlClick::count();
+    $activeUsers = \App\Models\User::count();
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'stats' => [
+            'total_urls' => $totalUrls,
+            'total_clicks' => $totalClicks,
+            'active_users' => $activeUsers,
+        ],
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

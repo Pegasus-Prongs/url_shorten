@@ -13,9 +13,9 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50/30">
             <nav
-                class="border-b border-gray-100 bg-white"
+                class="border-b border-gray-100/50 bg-white/95 backdrop-blur-sm shadow-sm relative z-50"
             >
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -39,6 +39,12 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('dashboard')"
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink
+                                    :href="route('urls.index')"
+                                    :active="route().current('urls.*')"
+                                >
+                                    URLs
                                 </NavLink>
                             </div>
                         </div>
@@ -147,6 +153,12 @@ const showingNavigationDropdown = ref(false);
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('urls.index')"
+                            :active="route().current('urls.*')"
+                        >
+                            URLs
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -182,10 +194,10 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Heading -->
             <header
-                class="bg-white shadow"
+                class="bg-white/60 backdrop-blur-sm shadow-sm border-b border-gray-100/50"
                 v-if="$slots.header"
             >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
